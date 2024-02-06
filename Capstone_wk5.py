@@ -97,4 +97,33 @@ def user_searchterm():
     else: 
         results = searchterm(target_term)
     return results
-user_searchterm()
+user_searchterm() 
+
+#%% endless search 
+donesy = ['DONE', 'Done', 'done']
+def user_search_loop():
+    while True: 
+        target_term = input('\n Please enter a search term of no more than 4 characters, or enter "done" to end session:')
+        if target_term in donesy: 
+            print('Thank you. 谢谢。')
+            break
+        elif len(target_term) >4: 
+            print('\n Invalid search term.') 
+        else: 
+            results = searchterm_dict(target_term)
+            print(results)
+            print('\n' +str(len(results))+' total results')
+
+user_search_loop() 
+
+#%% 
+import re
+
+#it's just going to be 
+# "match char + plus target" something like... 
+# \r'(\w{target_term}')
+#\r'(\w\w{target_term}') and then reverse order
+#figure out how to access the captured phrase. 
+def getgrams(): 
+    ()
+
