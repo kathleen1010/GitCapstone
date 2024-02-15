@@ -23,7 +23,7 @@ with open(filepath2, encoding = "utf-8") as f2:
 moses_dict = dict(zip(moses_zh, moses_en))
 
 #check dictionary. 
-moses_dict['另一种情况']
+#moses_dict['另一种情况']
 
 #%%remove multi-sentence 
 
@@ -45,36 +45,6 @@ def searchterm(term):
 def searchterm_dict(term): 
     examples = {key:value for (key, value) in sentence_dict.items() if term in key}
     return examples
-
-# nose_dict = searchterm_dict('鼻子')
-# nose_dict
-
-#%% user input search - for chinese
-# def user_searchterm(): 
-#     target_term = input('Please enter a search term of no more than two characters:')
-#     if len(target_term) >2: 
-#         print('Invalid search term.') 
-#     else: 
-#         results = searchterm(target_term)
-#     return results
-# user_searchterm() 
-
- #%% endless search - for pairs
-# donesy = ['DONE', 'Done', 'done']
-# def user_search_loop():
-#     while True: 
-#         target_term = input('\n Please enter a search term of no more than 4 characters, or enter "done" to end session:')
-#         if target_term in donesy: 
-#             print('Thank you. 谢谢。')
-#             break
-#         elif len(target_term) >4: 
-#             print('\n Invalid search term.') 
-#         else: 
-#             results = searchterm_dict(target_term)
-#             print(results)
-#             print('\n' +str(len(results))+' total results')
-
-# user_search_loop() 
 
 #%% Count Frequency
 import re
@@ -139,10 +109,10 @@ def getgrams(target):
         
     return phrasebook    
 
-listening = getgrams('听力')
-len(listening)
-listening2 = set(listening)
-len(listening2)
+# listening = getgrams('听力')
+# len(listening)
+# listening2 = set(listening)
+# len(listening2)
 
 #128, 96
 
@@ -155,20 +125,63 @@ def countgrams(target):
     counts = Counter(phrasebook)
     return counts.most_common(20)
 
+#countgrams('美国')
 
-countgrams('美国')
-countgrams('正常')
+#%% 
+#test dictionary loops 
 
-facts = getgrams('美国') 
-print(len(facts))
+pairs = {"bella": "edward", ("ron", "harry"): "hermione", "squidward":"spongebob", "ron":"lavender"}
+for key, value in pairs.items(): 
+    print(key, value)
+top = ["bella", "ron"]
 
-facts2 = Counter(facts)
-facts2.most_common(20) 
-len(facts2)
+lizi = defaultdict(list)
+for gram in top: 
+    for key, value in pairs.items():
+        if gram in key:
+            lizi[gram].append({key:value})
+lizi
+#%% get examples 
+from collections import defaultdict
 
-#%% test 
+result = countgrams('台湾')
+ 
+type(result[0])
+
+top = [pair[0] for pair in result]
 
 
 
+def lizigroup(target): 
+    result = countgrams(target)
+    top = [pair[0] for pair in result]      
+    lizi = defaultdict(list)
+    for gram in top: 
+        for key, value in sentence_dict.items():
+            if gram in key:
+                lizi[gram].append({key:value})
+    return lizi
 
+lizigroup('台湾')
+# countgrams('正常')
+
+#%% input from user count grams 
+
+donesy = ['DONE', 'Done', 'done']
+def user_search_loop():
+    while True: 
+        target_term = input('\n Please enter a search term of no more than 4 characters, or enter "done" to end session:')
+        if target_term in donesy: 
+            print('Thank you. 谢谢。')
+            break
+        elif len(target_term) >4: 
+            print('\n Invalid search term.') 
+        else: 
+            results = countgrams(target_term)
+            print(results)
+
+user_search_loop() 
+
+
+#%%
 
