@@ -27,7 +27,7 @@ moses_dict = dict(zip(moses_zh, moses_en))
 
 #%%remove multi-sentence 
 
-sentence_dict = {key:value for (key, value) in moses_dict.items() if '。' not in key}
+sentence_dict = {key.replace(' ',''):value for (key, value) in moses_dict.items() if '。' not in key}
 #len(sentence_dict)
 #%% basic search functions
 
@@ -35,7 +35,7 @@ def searchterm(term):
     examples = list()
     for sent in sentence_dict.keys(): 
         if term in sent: 
-            examples.append(sent.replace(' ',''))
+            examples.append(sent)
     return examples
 
 # nose = searchterm('鼻子')
@@ -120,68 +120,90 @@ def getgrams(target):
 
 from collections import Counter
 
-def countgrams(target): 
+def countgrams(target, gram_number): 
     phrasebook = getgrams(target)
     counts = Counter(phrasebook)
-    return counts.most_common(20)
+    return counts.most_common(gram_number)
 
-#countgrams('美国')
+countgrams('美国', 10)
+#%% USER count grams  - DEPRECATED
 
-#%% 
-#test dictionary loops 
+# donesy = ['DONE', 'Done', 'done']
+# def user_search_loop():
+#     while True: 
+#         target_term = input('\n Please enter a search term of no more than 4 characters, or enter "done" to end session:')
+#         if target_term in donesy: 
+#             print('Thank you. 谢谢。')
+#             break
+#         elif len(target_term) >4: 
+#             print('\n Invalid search term.') 
+#         else: 
+#             results = countgrams(target_term)
+#             print(results)
 
-pairs = {"bella": "edward", ("ron", "harry"): "hermione", "squidward":"spongebob", "ron":"lavender"}
-for key, value in pairs.items(): 
-    print(key, value)
-top = ["bella", "ron"]
+# user_search_loop()
 
-lizi = defaultdict(list)
-for gram in top: 
-    for key, value in pairs.items():
-        if gram in key:
-            lizi[gram].append({key:value})
-lizi
 #%% get examples 
 from collections import defaultdict
 
-result = countgrams('台湾')
- 
-type(result[0])
-
-top = [pair[0] for pair in result]
+result = countgrams('台湾', 20)
 
 
-
-def lizigroup(target): 
-    result = countgrams(target)
+def lizigroup(target, gram_number=15): 
+    result = countgrams(target, gram_number)
     top = [pair[0] for pair in result]      
     lizi = defaultdict(list)
     for gram in top: 
         for key, value in sentence_dict.items():
             if gram in key:
                 lizi[gram].append({key:value})
-    return lizi
+    result={a:b for a,b in result} #make the result a dictionary so that it can be combined via dictionary comprehension
+    combine_results= {key: [result[key], lizi[key]] for key in lizi}
+    return combine_results
 
-lizigroup('台湾')
-# countgrams('正常')
+lizigroup('走路',10)
+# len(result_lizi)
+# type(result_lizi)
 
-#%% input from user count grams 
+#%% user gets examples 
 
-donesy = ['DONE', 'Done', 'done']
-def user_search_loop():
-    while True: 
-        target_term = input('\n Please enter a search term of no more than 4 characters, or enter "done" to end session:')
-        if target_term in donesy: 
-            print('Thank you. 谢谢。')
-            break
-        elif len(target_term) >4: 
-            print('\n Invalid search term.') 
-        else: 
-            results = countgrams(target_term)
-            print(results)
+def user_lizi(target, gram_number=10, examples=5):
+    result_lizi = lizigroup(target, gram_number)
+    for key, value in result_lizi.items():
+        print (f'Phrase: {key}. \nNumber of Instances: {value[0]}. \nExamples: {value[1][:examples]}')
 
-user_search_loop() 
+user_lizi('们', 5, 5)
 
 
-#%%
+#user_lizi('美国', 3)
+
+
+#%%FOR STREAMLIT 
+
+import streamlit as st 
+st.title("找例子机 - Example Finder")
+st.text('Enter a Chinese word to find the phrases it is most commonly used in, along with examples')
+
+gram_number = st.number_input("Number of top phrases to return", min_value = 1, max_value = 20)
+examples = st.number_input("Number of examples per phrase", min_value = 1, max_value = 20)
+target = st.text_input("Term to search")
+
+user_lizi('美国', 5, 5)
+
+#%% USER count grams 
+
+# donesy = ['DONE', 'Done', 'done']
+# def user_search_loop():
+#     while True: 
+#         target = input('\n Please enter a search term of no more than 4 characters, or enter "done" to end session:')
+#         if target in donesy: 
+#             print('Thank you. 谢谢。')
+#             break
+#         elif len(target) >4: 
+#             print('\n Invalid search term.') 
+#         else: 
+#             user_lizi(target, 5)
+#             #else: 
+#              #   print('\n Invalid number.')
+#             #print(output)
 
