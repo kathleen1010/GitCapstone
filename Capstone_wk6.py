@@ -125,7 +125,7 @@ def countgrams(target, gram_number):
     counts = Counter(phrasebook)
     return counts.most_common(gram_number)
 
-countgrams('美国', 10)
+#countgrams('美国', 10)
 #%% USER count grams  - DEPRECATED
 
 # donesy = ['DONE', 'Done', 'done']
@@ -146,7 +146,7 @@ countgrams('美国', 10)
 #%% get examples 
 from collections import defaultdict
 
-result = countgrams('台湾', 20)
+#result = countgrams('台湾', 20)
 
 
 def lizigroup(target, gram_number=15): 
@@ -161,7 +161,7 @@ def lizigroup(target, gram_number=15):
     combine_results= {key: [result[key], lizi[key]] for key in lizi}
     return combine_results
 
-lizigroup('走路',10)
+#lizigroup('走路',10)
 # len(result_lizi)
 # type(result_lizi)
 
@@ -172,7 +172,7 @@ def user_lizi(target, gram_number=10, examples=5):
     for key, value in result_lizi.items():
         print (f'Phrase: {key}. \nNumber of Instances: {value[0]}. \nExamples: {value[1][:examples]}')
 
-user_lizi('们', 5, 5)
+user_lizi('美', 5, 5)
 
 
 #user_lizi('美国', 3)
@@ -181,14 +181,21 @@ user_lizi('们', 5, 5)
 #%%FOR STREAMLIT 
 
 import streamlit as st 
-st.title("找例子机 - Example Finder")
-st.text('Enter a Chinese word to find the phrases it is most commonly used in, along with examples')
 
-gram_number = st.number_input("Number of top phrases to return", min_value = 1, max_value = 20)
-examples = st.number_input("Number of examples per phrase", min_value = 1, max_value = 20)
-target = st.text_input("Term to search")
+def app(): 
+        
+    st.title("找例子机 - Example Finder")
+    st.text('Enter a Chinese word to find the phrases it is most commonly used in, along with examples')
+    
+    gram_number = st.number_input("Number of top phrases to return", min_value = 1, max_value = 20)
+    examples = st.number_input("Number of examples per phrase", min_value = 1, max_value = 20)
+    target = st.text_input("Term to search")
+    
+    user_lizi(target, gram_number, examples)
+    user_lizi('美国', 5, 5)
 
-user_lizi('美国', 5, 5)
+if __name__=='__main__':
+    app()
 
 #%% USER count grams 
 
