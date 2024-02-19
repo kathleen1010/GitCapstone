@@ -172,7 +172,7 @@ def user_lizi(target, gram_number=10, examples=5):
     for key, value in result_lizi.items():
         print (f'Phrase: {key}. \nNumber of Instances: {value[0]}. \nExamples: {value[1][:examples]}')
 
-user_lizi('美', 5, 5)
+#user_lizi('美', 5, 5)
 
 
 #user_lizi('美国', 3)
