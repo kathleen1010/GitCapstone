@@ -185,14 +185,14 @@ import streamlit as st
 def app(): 
         
     st.title("找例子机 - Example Finder")
-    st.text('Enter a Chinese word to find the phrases it is most commonly used in, along with examples')
+    st.text('Enter a Chinese word to find the phrases it is most commonly used in, along with examples. The data comes from a source that I will attribute HERE.')
     
     gram_number = st.number_input("Number of top phrases to return", min_value = 1, max_value = 20)
     examples = st.number_input("Number of examples per phrase", min_value = 1, max_value = 20)
-    target = st.text_input("Term to search")
+    target = st.text_input("Term to search", '美')
     
     user_lizi(target, gram_number, examples)
-    user_lizi('美国', 5, 5)
+    
 
 if __name__=='__main__':
     app()
