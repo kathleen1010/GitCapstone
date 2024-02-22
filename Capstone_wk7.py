@@ -9,13 +9,18 @@ Created on Wed Jan 17 10:32:35 2024
 #%reset
 
 #%% test
-#%% Import moses
-filepath = 'C:/Users/Kathleen/Documents/GitCapstone/en-zh.txt/TED2013.en-zh_en.txt'
+#%% Get moses files
+import os
+datadir='en-zh.txt'
+file1 = 'TED2013.en-zh_en.txt'
+file2 = 'TED2013.en-zh_zh.txt'
 
-with open(filepath, encoding = "utf-8") as f:
+filepath1 = os.path.join(datadir,file1)
+
+with open(filepath1, encoding = "utf-8") as f:
     moses_en = (item.strip() for item in f.readlines())
 
-filepath2 = 'C:/Users/Kathleen/Documents/GitCapstone/en-zh.txt/TED2013.en-zh_zh.txt'
+filepath2 = os.path.join(datadir,file2)
 
 with open(filepath2, encoding = "utf-8") as f2:
     moses_zh = (item.strip() for item in f2.readlines())
@@ -173,11 +178,8 @@ def user_lizi(target, gram_number=10, examples=5):
     for key, value in result_lizi.items():
         st.write(f'**Phrase: {key}.**')
         st.write(f'Number of Instances: {value[0]}. Examples below:')
-        for i in range(examples):
-            try:
-                st.write(value[1][i])
-            except IndexError:
-                st.write('No more examples found / 没有例子了。')
+        for i in range(min(examples,value[0])):
+            st.write(value[1][i])
 
 
 #user_lizi('美', 5, 5)
