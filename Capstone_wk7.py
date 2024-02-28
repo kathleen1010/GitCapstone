@@ -194,7 +194,7 @@ import streamlit as st
 
 def app(): 
         
-    st.title("找例子机 - Example Finder App")
+    st.title("语境探秘 - Context Explorer")
     st.markdown("""Improve your Chinese through grammatical examples. Enter a term to see the most common phrases containing that term in our dataset. You may also select the number of phrases and examples to return.""")
     st.markdown("""The app presently uses a database of TED talks presented in 2013, [provided by CASCAMAT](http://www.casmacat.eu/corpus/ted2013.html). 
                 All data were obtained from the [Open Parallel Corpus Project](https://opus.nlpl.eu/). For More information see J. Tiedemann, 2012, [Parallel Data, Tools and Interfaces in OPUS](http://www.lrec-conf.org/proceedings/lrec2012/pdf/463_Paper.pdf).""")
