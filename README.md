@@ -4,8 +4,8 @@ To use this program:
 You will need the packages specified in requirements, as well as Anaconda Prompt or a comparable terminal. 
 Download Capstone_final.py to your machine. 
 Open Anaconda prompt.
-Navigate to the folder where you have stored Capstone_final.py 
+Navigate to the folder where you have stored Capstone_final_with_viz.py 
 Type the following and then press return: 
-streamlit run Capstone_final.py
+streamlit run Capstone_final_with_viz.py
 
 
