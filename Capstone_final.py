@@ -9,6 +9,13 @@ Created on Wed Jan 17 10:32:35 2024
 #%reset
 
 #%% test
+
+#for local use only 
+import os
+    
+os.getcwd()
+os.chdir("C:\\Users\\Kathleen\\Documents\\GitCapstone\\")
+
 #%% Get moses files
 import os
 datadir='en-zh.txt'
@@ -19,7 +26,7 @@ filepath1 = os.path.join(datadir,file1)
 
 with open(filepath1, encoding = "utf-8") as f:
     moses_en = (item.strip() for item in f.readlines())
-
+  
 filepath2 = os.path.join(datadir,file2)
 
 with open(filepath2, encoding = "utf-8") as f2:

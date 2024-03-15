@@ -308,6 +308,13 @@ topgram_table('国', 20)
 #result = countgrams('走路', 10)
 #[items for items, values in result]
 
+def topgram2(target, gram_number=10): 
+    result = countgrams(target, gram_number)
+    grams = [items for items, values in result] 
+    y_values = [values for items, values in result]
+    return grams, y_values
+
+grams, y_values = topgram2('国', 20)
 
 #%% user gets examples 
 
@@ -336,7 +343,7 @@ from streamlit_echarts import st_echarts
 scatter_data = [[eng, zhong] for eng, zhong in zip(data_clean['ct_en'], data_clean['ct_zh'])]
 
 
-options = {
+scatter_options = {
     "title": {
       "text": 'Sentence Length in Source Data by Language',
       "subtext": 'English vs. Chinese',
@@ -356,10 +363,12 @@ options = {
 }
 
 
+
+
 def app(): 
         
     st.title("语境探秘 - Context Explorer")
-    st.markdown("""Improve your Chinese through grammatical examples. Enter a term to see the most common phrases containing that term in our dataset. You may also select the number of phrases and examples to return. The top 20 phrases will be displayed in a bar graph below.""")
+    st.markdown("""Improve your Chinese through grammatical examples. Enter a term to see the most common phrases containing that term in our dataset. You may also select the number of phrases and examples to return.""")
     st.markdown("""The app presently uses a database of TED talks presented in 2013, [provided by CASCAMAT](http://www.casmacat.eu/corpus/ted2013.html). 
                 All data were obtained from the [Open Parallel Corpus Project](https://opus.nlpl.eu/). For More information see J. Tiedemann, 2012, [Parallel Data, Tools and Interfaces in OPUS](http://www.lrec-conf.org/proceedings/lrec2012/pdf/463_Paper.pdf).""")
     
@@ -372,8 +381,32 @@ def app():
     #topgram_table(target,20)
     user_lizi(target, gram_number, examples)
     
+    grams, y_values = topgram2(target, 10)
+    
+
+    bar_options = {
+      "title": {
+        "text": 'Top 10 Phrases for Search Term',
+        "left": 'center'
+      },
+        "xAxis": {  "axisLabel": {"interval": 0, "rotate": 30 } ,
+        "type": 'category',
+        "data": grams, 
+      },
+      "yAxis": {
+        "type": 'value'
+      },
+      "series": [
+        {
+          "data": y_values,
+          "type": 'bar'
+        }
+      ]
+    };
+    st_echarts(options=bar_options, height="500px")
+
     st.markdown("**The graph below shows the lengths of English sentences in the Data set compared to Chinese sentences. Outliers have been removed using the IQR method.**")
-    st_echarts(options=options, height="500px")
+    st_echarts(options=scatter_options, height="500px")
     
     #linegraph.set(xlim=(0, eq3+1.5*IQR), ylim=(0, zq3+1.5*IQR))
     plt.show()
